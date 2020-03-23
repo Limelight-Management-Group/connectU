@@ -15,8 +15,9 @@ router.get('/', (req, res) =>{
   console.log({'message':'hit the home route.'});
 })
 
-router.get('/users', (req, res) =>{
-  console.log('hit the users route.');
+router.get('/chat', (req, res) =>{
+  res.status(200).render('chat/chat')
+  console.log('hit the chat route.');
 })
 
 module.exports = router;

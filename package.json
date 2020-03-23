@@ -1,0 +1,29 @@
+{
+  "name": "connectu",
+  "version": "1.0.0",
+  "description": "ConnectU is chat and video app that connects you to other members on the platform.",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Limelight-Management-Group/connectU.git"
+  },
+  "keywords": [
+    "chat",
+    "video",
+    "VR",
+    "AR",
+    "voice"
+  ],
+  "author": "Wayne Banks",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Limelight-Management-Group/connectU/issues"
+  },
+  "homepage": "https://github.com/Limelight-Management-Group/connectU#readme"
+}

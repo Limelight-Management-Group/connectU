@@ -6,6 +6,37 @@
 
 </head>
 <body>
+<div>
+<form class="container" id="signup" method="post" action="/signup" novalidate>
 
+  <div class="form-group">
+      <label for="formName">User Name</label>
+      <input type="text" class="form-control" id="formUserName" placeholder="What should we call you?" name="name" required>
+    </div>
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="email" placeholder="Enter email">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+
+    <div class="form-group">
+      <label for="formLocation">Location</label>
+      <input type="text" class="form-control" id="formUserLocation" placeholder="Where are you located?" name="location" required>
+    </div>
+    
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Bio</label>
+    <textarea class="form-control" id="userTextArea" name="bio" rows="3"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
 </body>
 </html>

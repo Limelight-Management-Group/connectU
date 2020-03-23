@@ -5,6 +5,7 @@ const ejs = require('ejs');
 var bodyParser = require('body-parser');
 var methodOverride = require("method-override");
 var router = express.Router();
+var bcrypt = require('bcrypt');
 
 
 

@@ -20,12 +20,12 @@ router.get('/', (req, res) =>{
 
 router.get('/users', (req, res)=>{
 
-})
+});
 
 router.get('/signup', (req, res) =>{
   res.status(200).render('signUp');
   console.log({'message':'hit the home route.'});
-})
+});
 
 router.post('/signup', async (req, res) =>{
   try{
@@ -45,6 +45,11 @@ router.post('/signup', async (req, res) =>{
     var MongoClient = mongodb.MongoClient;
 
     MongoClient.connect(url, function(err, db){
+      var userLogin = {
+        email: req.body.email,
+        password: req.body.password
+      }
+
       if(err){
         console.log('Unable to connect.---->')
       }
@@ -53,11 +58,31 @@ router.post('/signup', async (req, res) =>{
         assert.equal(null, err);
         console.log('user added!');
         db.close();
-        res.status(200).send(); 
+        res.status(200).redirect('/chat'); 
       }
     })
   }catch {
     res.status(500).send()
+  }
+});
+
+router.get('/login', (req,res)=>{
+  res.status(200).render('users/login')
+});
+
+router.post('/login', async (req, res)=>{
+  const user = Users.find(user => user.name = req.body.name);
+  if(user == null){
+    return res.status(400).send('cannot find that user, sorry!');
+  }
+  try{
+   if (await bcrypt.compare(req.body.password, user.password)){
+
+    console.log("this is the userLogin", user.password)
+   }
+  }    
+  catch {
+    res.status(500).send("Error!")
   }
 })
 

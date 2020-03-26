@@ -9,9 +9,25 @@ var MongoClient = require('mongodb').MongoClient;
 var Users = require('../public/js/models/users')
 const assert = require('assert');
 var bcrypt= require('bcrypt');
+let passport = require('passport');
+
+// DB Config
+var MongoUrl = require('../keys.js').mongoURL
+
+// Connect to Mongo
+// let db = mongoose.connect(MongoUrl, { useNewUrlParser: true})
+// .then(() => console.log("mongodb is connected!"))
+// .catch(err => console.log(err,"this is failing."))
+
+// const initializePassport = require('../passport-config.js');
+// initializePassport(
+//   passport, 
+//   email => users.find(user => user.email === email),
+//   id => users.find(user => user.id ===id)
+// );
+console.log("this is here")
 
 
-var url = 'mongodb://localhost:27017/connectU';
 
 router.get('/', (req, res) =>{
   res.status(200).render('home');
@@ -30,61 +46,41 @@ router.get('/signup', (req, res) =>{
 router.post('/signup', async (req, res) =>{
   try{
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(req.body.password, salt)
-  
+    const hashedPassword = await bcrypt.hash(req.body.password, salt); 
   const userObj = {
     name: req.body.name,
     password: hashedPassword,
     email: req.body.email,
     location: req.body.location,
-    bio:  req.body.bio}
-    // seUnifiedTopology: tru 
-
-    console.log('this is the userObj', userObj);
-    
-    var MongoClient = mongodb.MongoClient;
-
-    MongoClient.connect(url, function(err, db){
-      var userLogin = {
-        email: req.body.email,
-        password: req.body.password
-      }
-
-      if(err){
-        console.log('Unable to connect.---->')
-      }
-      else{
-        console.log('connection established successfully--->');
-        assert.equal(null, err);
-        console.log('user added!');
-        db.close();
-        res.status(200).redirect('/chat'); 
-      }
-    })
-  }catch {
-    res.status(500).send()
+    bio: req.body.bio  
   }
-});
+  let connectString = process.env.Database_URL;
+  mongoose.connect(MongoUrl, {
+    useNewUrlParser: true,
+  });
+  let db = mongoose.connection;
+  var userStorage = {};
+  db.on('error', error =>console.error(error));
+  db.once('open', function(){
+    Users.create(req.body).then( async function(user, err){
+         console.log('this is the user', user)
+         return await user
+         userStorage = user;
+    });
+        return res.status(200).render('chat/chat', userStorage)
+  })
+}
+catch{
+  console.log("failed!")
+}
+})  
+
 
 router.get('/login', (req,res)=>{
   res.status(200).render('users/login')
 });
 
-router.post('/login', async (req, res)=>{
-  const user = Users.find(user => user.name = req.body.name);
-  if(user == null){
-    return res.status(400).send('cannot find that user, sorry!');
-  }
-  try{
-   if (await bcrypt.compare(req.body.password, user.password)){
 
-    console.log("this is the userLogin", user.password)
-   }
-  }    
-  catch {
-    res.status(500).send("Error!")
-  }
-})
 
 router.get('/chat', (req, res) =>{
   res.status(200).render('chat/chat')

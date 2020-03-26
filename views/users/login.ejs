@@ -8,7 +8,9 @@
 <body>
 
 <h1>Sign In</h1>
-
+<% if (messages.error) {%>
+  <%= messages.error %>
+<%}%>
 <form class="container" method="post" action="/login">
   <div class="form-group">
     <label for="loginEmail">Email</label>
@@ -21,6 +23,6 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-
+<a href="/signup">Sign up, now!</a>
 </body>
 </html>

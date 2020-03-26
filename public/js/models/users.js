@@ -10,19 +10,26 @@ mongoose.set('useFindAndModify', false);
 const UsersSchema = new Schema({
   name: {
     type: String,
-    // required: [true: 'Title field required']
+    required: true
   },
   bio:  {
     type: String,
   }, 
   password: {
     type: String,
+    required: true,
+    bcrypt: true
   },
   email: {
     type: String,
+    required: true
   },
   location: {
-    type: String,
+    type: String
+  },
+  date:{
+    type: Date,
+    default: Date.now
   }
 
 })

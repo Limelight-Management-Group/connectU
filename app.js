@@ -1,3 +1,6 @@
+if(process.env.NODE_ENV !== 'production'){
+  require('dotenv').config();
+}
 const express = require('express');
 let app = express();
 const path = require('path');
@@ -6,7 +9,19 @@ var bodyParser = require('body-parser');
 var methodOverride = require("method-override");
 var router = express.Router();
 var bcrypt = require('bcrypt');
+const passport = require('passport');
+const flash = require('express-flash');
+const session = require('express-session');
 
+var MongoUrl = require('./keys.js')
+
+
+// const initializePassport = require('./passport-config.js');
+// initializePassport(
+//   // passport, 
+//   // email => users.find(user => user.email === email),
+//   // id => users.find(user => user.id ===id)
+// );
 
 
 
@@ -19,13 +34,20 @@ app.set('/views', __dirname + '/views');
 // set up template
 app.set( 'view engine', 'ejs' );
 
-// parse requestbody from form & parse JSON
+// parse requestbody from form & parse JSON in req post
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
   extended: false
 } ) );
+app.use(flash())
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false
+  // saveUnitialized: false 
+}));
 
-
+app.use(passport.initialize());
+app.use(passport.session());
 
 // methodeoverride for put and delete methods
 app.use(methodOverride('_method'));

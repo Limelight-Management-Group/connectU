@@ -6,16 +6,20 @@ var mongodb = require('mongodb')
 var mongoose = require('mongoose');
 let objectID = require("mongodb").ObjectID;
 var MongoClient = require('mongodb').MongoClient;
-// var Users = require('../public/js/models/users')
 const assert = require('assert');
 var url = 'mongodb://localhost:27017/connectU';
+const express = require('express');
+
+let app = express();
+
+app.use(express.static(path.join(__dirname, 'public/js')));
+
+var Users = require('./users.js');
 
 
 
+// function initialize(passport, getUserByEmail, getUserById, req, res) {
 
-
-function initialize(passport, getUserByEmail, getUserById, req, res) {
-}
   // var MongoClient = mongodb.MongoClient;
   // var url = "mongodb://localhost:27017/connectU";
   // let userLogin = {};
@@ -46,13 +50,49 @@ function initialize(passport, getUserByEmail, getUserById, req, res) {
   //     return done(e);
   //   }
   // }
-  // passport.use(new LocalStrategy({usernameField: 'email'}, authenticateUser));
-  // passport.serializeUser((user,done) => done(null, user.id))
-  // passport.deserializeUser((id,done) => {
-  //   return done(null, getUserById(id)) 
-  // })
+ module.exports = function(passport){ 
+  passport.use(
+    new LocalStrategy({usernameField: 'email'}, function(email, password, done){
+      // findUser
+      Users.findOne({email: req.body.email})
+        .then(user => {
+          if(user){
+            alert("yup")
+          }
+          if(!user){
+            return done(null, false, {message: "Cannot find user with this email."});
+          } 
+          bcrypt.compare(password, user.password, (err, isMatch) =>{
+            if(err){ throw err;
+              console.log("found one")
+            }  
+            if(isMatch){
+              return done(null, user);
+              console.log("got a user", user)
+            } else {
+              console.log('stuck in the else')
+              return done(null, false, {message: "Password is not correct for email entered. Please try again."});
+            }
+          })
 
-// }
+        })
+        .catch(err => console.log(err));
+  })
+
+  )};
+
+  passport.serializeUser(function(user, done){
+    done(null, user.id);
+    console.log("user", user)
+  });
+
+
+  passport.deserializeUser(function(id,done){
+    User.findById(id, function(err, user){
+      console.log('ser', user)
+      done(err, user);
+    });
+  });
 
 // passport.use(new LocalStrategy(
 
@@ -60,4 +100,4 @@ function initialize(passport, getUserByEmail, getUserById, req, res) {
 
 
 
-module.exports = initialize;
+// module.exports = initialize;

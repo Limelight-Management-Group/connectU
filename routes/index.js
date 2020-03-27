@@ -6,7 +6,7 @@ var mongodb = require('mongodb')
 var mongoose = require('mongoose');
 let objectID = require("mongodb").ObjectID;
 var MongoClient = require('mongodb').MongoClient;
-var Users = require('../public/js/models/users')
+var Users = require('../users')
 const assert = require('assert');
 var bcrypt= require('bcrypt');
 let passport = require('passport');
@@ -67,7 +67,10 @@ router.post('/signup', async (req, res) =>{
          return await user
          userStorage = user;
     });
-        return res.status(200).render('chat/chat', userStorage)
+    req.flash('success_msg', "You are now registered!");
+    return res.redirect('/login');
+
+
   })
 }
 catch{
@@ -80,6 +83,13 @@ router.get('/login', (req,res)=>{
   res.status(200).render('users/login')
 });
 
+router.post('/login', (req, res, next)=>{
+  passport.authenticate('local', {
+    successRedirect: '/chat',
+    failurRedirect: 'login'
+  })(req,res, next);
+  console.log("req", req.body)
+})
 
 
 router.get('/chat', (req, res) =>{

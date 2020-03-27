@@ -16,7 +16,6 @@ const session = require('express-session');
 var MongoUrl = require('./keys.js')
 
 
-// const initializePassport = require('./passport-config.js');
 // initializePassport(
 //   // passport, 
 //   // email => users.find(user => user.email === email),
@@ -30,6 +29,7 @@ var MongoUrl = require('./keys.js')
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('/views', __dirname + '/views');
 
+const initializePassport = require('./passport-config.js')(passport);
 
 // set up template
 app.set( 'view engine', 'ejs' );
@@ -39,15 +39,26 @@ app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
   extended: false
 } ) );
-app.use(flash())
+// Session Middleware
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  resave: false
-  // saveUnitialized: false 
+  resave: true,
+  saveUnitialized: true 
 }));
 
+// Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+// connect flash
+app.use(flash());
+
+// global variables
+app.use((req, res, next) =>{
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});
 
 // methodeoverride for put and delete methods
 app.use(methodOverride('_method'));

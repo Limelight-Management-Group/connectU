@@ -1,21 +1,24 @@
-let passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
+const express = require('express');
+let app = express();
 var path = require("path");
+const LocalStrategy = require('passport-local').Strategy;
 var mongodb = require('mongodb')
 var mongoose = require('mongoose');
 let objectID = require("mongodb").ObjectID;
 var MongoClient = require('mongodb').MongoClient;
+var Users = require('./users');
 const assert = require('assert');
+var bcrypt = require('bcrypt');
+let passport = require('passport');
 var url = 'mongodb://localhost:27017/connectU';
-const express = require('express');
+console.log('the uRL', url)
+var MongoUrl = require('./keys.js').mongoURL
 
-let app = express();
 
-app.use(express.static(path.join(__dirname, 'public/js')));
+// app.use(express.static(path.join(__dirname, 'public/js')));
 
-var Users = require('./users.js');
 
+// console.log("this is the Users", Users)
 
 
 // function initialize(passport, getUserByEmail, getUserById, req, res) {
@@ -50,36 +53,51 @@ var Users = require('./users.js');
   //     return done(e);
   //   }
   // }
+  // console.log('the db', db)
+  // let ac = mongoose..........
+    // console.log(MongoUrl,"MongoUrl")
  module.exports = function(passport){ 
-  passport.use(
-    new LocalStrategy({usernameField: 'email'}, function(email, password, done){
-      // findUser
-      Users.findOne({email: req.body.email})
-        .then(user => {
-          if(user){
-            alert("yup")
-          }
-          if(!user){
-            return done(null, false, {message: "Cannot find user with this email."});
-          } 
-          bcrypt.compare(password, user.password, (err, isMatch) =>{
-            if(err){ throw err;
-              console.log("found one")
-            }  
-            if(isMatch){
-              return done(null, user);
-              console.log("got a user", user)
-            } else {
-              console.log('stuck in the else')
-              return done(null, false, {message: "Password is not correct for email entered. Please try again."});
-            }
+    passport.use(
+      new LocalStrategy({usernameField: 'email'}, async function(email, password, done){
+        // let db = mongoose.connection;
+        console.log('MongoUrl-->',MongoUrl)
+            // DB Config
+        // var MongoUrl = require('./keys.js').mongoURL
+
+        let connectString = process.env.Database_URL;
+        // mongoose.connect(MongoUrl);
+        mongoose.connect(url, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true
+        });
+
+        let db = mongoose.connection;
+        let userStorage = {};
+        db.on('error', error=>console.error(error));
+        db.once('open', function(){
+          console.log('step1')
+          // findUser
+          Users.findOne({email: email})
+            .then(user => {
+              if(!user){
+                return done(null, false, {message: 'No user with that email. Try again.'});
+              }
+              // Match Password
+              bcrypt.compare(password, user.password, (err, isMatch)=>{
+                if(err) throw err;
+                
+                if(isMatch){
+                  return done(null, user);
+                } else{
+                  return done(null, false, {message: "Incorrect password for email provided. Try again."});
+                }          
+              });
           })
-
-        })
+        })    
         .catch(err => console.log(err));
-  })
-
-  )};
+      })
+    )  
+  };
 
   passport.serializeUser(function(user, done){
     done(null, user.id);
@@ -88,7 +106,7 @@ var Users = require('./users.js');
 
 
   passport.deserializeUser(function(id,done){
-    User.findById(id, function(err, user){
+    Users.findById(id, function(err, user){
       console.log('ser', user)
       done(err, user);
     });

@@ -3,6 +3,8 @@ if(process.env.NODE_ENV !== 'production'){
 }
 const express = require('express');
 let app = express();
+var cookieParser = require('cookie-parser')
+
 const path = require('path');
 const ejs = require('ejs');
 var bodyParser = require('body-parser');
@@ -43,8 +45,11 @@ app.use( bodyParser.urlencoded( {
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: true,
-  saveUnitialized: true 
+  saveUnitialized: true, 
 }));
+
+//parse cookie 
+// app.use(express.cookieParser());
 
 // Passport Middleware
 app.use(passport.initialize());

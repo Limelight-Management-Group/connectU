@@ -13,6 +13,7 @@ let passport = require('passport');
 
 // DB Config
 var MongoUrl = require('../keys.js').mongoURL
+// console.log('mongoURL', MongoUrl);
 
 // Connect to Mongo
 // let db = mongoose.connect(MongoUrl, { useNewUrlParser: true})
@@ -25,7 +26,7 @@ var MongoUrl = require('../keys.js').mongoURL
 //   email => users.find(user => user.email === email),
 //   id => users.find(user => user.id ===id)
 // );
-console.log("this is here")
+// console.log("this is here")
 
 
 
@@ -54,7 +55,7 @@ router.post('/signup', async (req, res) =>{
     location: req.body.location,
     bio: req.body.bio  
   }
-  let connectString = process.env.Database_URL;
+  // let connectString = process.env.Database_URL;
   mongoose.connect(MongoUrl, {
     useNewUrlParser: true,
   });
@@ -62,7 +63,8 @@ router.post('/signup', async (req, res) =>{
   var userStorage = {};
   db.on('error', error =>console.error(error));
   db.once('open', function(){
-    Users.create(req.body).then( async function(user, err){
+    console.log("connection successful!")
+    Users.create(userObj).then( async function(user, err){
          console.log('this is the user', user)
          return await user
          userStorage = user;
@@ -88,7 +90,10 @@ router.post('/login', (req, res, next)=>{
     successRedirect: '/chat',
     failurRedirect: 'login'
   })(req,res, next);
-  console.log("req", req.body)
+  let user = req.body
+  console.log('user-->',user)
+  return user
+  res.render('home');
 })
 
 

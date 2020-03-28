@@ -10,6 +10,7 @@ var Users = require('../users')
 const assert = require('assert');
 var bcrypt= require('bcrypt');
 let passport = require('passport');
+const { ensureAuthenticated} = require('../auth');
 
 // DB Config
 var MongoUrl = require('../keys.js').mongoURL
@@ -78,7 +79,7 @@ router.post('/signup', async (req, res) =>{
 catch{
   console.log("failed!")
 }
-})  
+});  
 
 
 router.get('/login', (req,res)=>{
@@ -94,11 +95,18 @@ router.post('/login', (req, res, next)=>{
   console.log('user-->',user)
   return user
   res.render('home');
+});
+
+// Logout Route
+router.get('/logout', function (req,res){
+  req.logout();
+  res.redirect('/login');
 })
 
-
-router.get('/chat', (req, res) =>{
-  res.status(200).render('chat/chat')
+router.get('/chat', ensureAuthenticated, (req, res) =>{
+  res.status(200).render('chat/chat',{
+    user: req.user
+  })
   console.log('hit the chat route.');
 })
 

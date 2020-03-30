@@ -32,6 +32,8 @@ var MongoUrl = require('../keys.js').mongoURL
 
 
 router.get('/', (req, res) =>{
+  const userId  = req.session.id;
+
   res.status(200).render('home');
   console.log({'message':'hit the home route.'});
 })
@@ -83,6 +85,7 @@ catch{
 
 
 router.get('/login', (req,res)=>{
+  console.log('userId', req.session.id)
   res.status(200).render('users/login')
 });
 
@@ -93,6 +96,8 @@ router.post('/login', (req, res, next)=>{
   })(req,res, next);
   let user = req.body
   console.log('user-->',user)
+  req.session.id = req.body._id;
+  console.log("req.session", req.session)
   return user
   res.render('home');
 });
@@ -105,7 +110,8 @@ router.get('/logout', function (req,res){
 
 router.get('/chat', ensureAuthenticated, (req, res) =>{
   res.status(200).render('chat/chat',{
-    user: req.user
+    user: req.user,
+    id: req.session.id
   })
   console.log('hit the chat route.');
 })

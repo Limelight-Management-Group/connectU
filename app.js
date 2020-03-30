@@ -14,16 +14,21 @@ var bcrypt = require('bcrypt');
 const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
-
+const TWO_HOURS = 1000 * 60 * 60 * 2;
+const SESS_LIFETIME = TWO_HOURS
 var MongoUrl = require('./keys.js')
+// const NODE_ENV = 'development'
+const IN_PROD = process.env.NODE_ENV === 'production'
 
-
+console.log("this is 2 hours:",TWO_HOURS);
 // initializePassport(
 //   // passport, 
 //   // email => users.find(user => user.email === email),
 //   // id => users.find(user => user.id ===id)
 // );
 
+let name = process.env.SESS_NAME
+console.log("name", name)
 
 
 
@@ -41,15 +46,23 @@ app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
   extended: false
 } ) );
-// Session Middleware
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUnitialized: true, 
-}));
 
 //parse cookie 
-// app.use(express.cookieParser());
+// app.use(express.cookieParser(SESS_SECRET));
+
+// Session Middleware
+app.use(session({
+    name: 'process.env.SESS_NAME',
+    resave: false,
+    saveUninitialized: false,
+    secret: 'cat',
+    cookie: {
+      maxAge: SESS_LIFETIME,
+      sameSite: true,
+      secure: IN_PROD
+    } 
+}));
+
 
 // Passport Middleware
 app.use(passport.initialize());

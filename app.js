@@ -18,7 +18,9 @@ const TWO_HOURS = 1000 * 60 * 60 * 2;
 const SESS_LIFETIME = TWO_HOURS
 var MongoUrl = require('./keys.js')
 // const NODE_ENV = 'development'
-const IN_PROD = process.env.NODE_ENV === 'production'
+const IN_PROD = process.env.NODE_ENV === 'production';
+const Video = require('twilio-video');
+
 
 console.log("this is 2 hours:",TWO_HOURS);
 // initializePassport(
@@ -88,10 +90,16 @@ app.use(routes);
 // app.use(app.router);
 // routes.initialize(app)
 
-
-
 let port = process.env.PORT || 3000;
 
-app.listen(port, () =>{
-  console.log('JS server is live on port:', port)
-})
+const server = require('http').createServer(app);
+
+const io = require('socket.io')(server);
+io.on('connection', () => { /* … */ });
+server.listen(port);
+
+
+
+// app.listen(port, () =>{
+//   console.log('JS server is live on port:', port)
+// })

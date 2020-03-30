@@ -9,8 +9,29 @@
 "Welcome to ConnectU"
 
 <div class="container">
-  <h3>Hey <%= user.name%></h3>
-  <%= id %>
+  <h3>Hey <%#= user.name%></h3>
+  <%#= id %>
+</div>
+
+<div>
+  <form class="container" method="post" action="/chat">
+  
+  <div class="form-group">
+    <label for="loginPassword">Message</label>
+    <input type="textarea" class="form-control" id="chatBody" name="chatBody" placeholder="Enter message...">
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">blah</div>
+    <div class="col-sm-12">bah</div>
+    <div class="col-sm-12">bh</div>
+  </div>
 </div>
 
 <a href="/logout" class="btn btn-secondary">Logout</a>

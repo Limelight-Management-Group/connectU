@@ -6,7 +6,8 @@ var mongodb = require('mongodb')
 var mongoose = require('mongoose');
 let objectID = require("mongodb").ObjectID;
 var MongoClient = require('mongodb').MongoClient;
-var Users = require('../users')
+var Users = require('../users');
+var Chats = require('../chats');
 const assert = require('assert');
 var bcrypt= require('bcrypt');
 let passport = require('passport');
@@ -33,6 +34,7 @@ var MongoUrl = require('../keys.js').mongoURL
 
 router.get('/', (req, res) =>{
   const userId  = req.session.id;
+  let user = req.session.email
 
   res.status(200).render('home');
   console.log({'message':'hit the home route.'});
@@ -47,6 +49,39 @@ router.get('/signup', (req, res) =>{
   console.log({'message':'hit the home route.'});
 });
 
+router.post('/chat', (req, res) => {
+try{
+  const chatObj = {
+    userName: req.session.id,
+    chatBody: req.body.chatBody,
+    email: req.session
+  };
+
+  console.log("this is the chatBody", chatObj);
+   mongoose.connect(MongoUrl, {
+    useNewUrlParser: true,
+  });
+  let db = mongoose.connection;
+  var chatStorage = {};
+  db.on('error', error =>console.error(error));
+  db.once('open', function(){
+    console.log("connection successful!")
+    Chats.create(chatObj).then( async function(chat, err){
+         console.log('this is the chat', chat)
+         console.log('this is the session', req.session)
+         return await chat
+         chatStorage = chat;
+    });
+    req.flash('success_msg', "You are now registered!");
+    return res.render('chat/chat');
+
+
+  })
+}
+catch{
+
+}
+})
 router.post('/signup', async (req, res) =>{
   try{
     const salt = await bcrypt.genSalt();
@@ -85,7 +120,10 @@ catch{
 
 
 router.get('/login', (req,res)=>{
+
   console.log('userId', req.session.id)
+  req.session.email = req.body.email
+  req.session.id = req.body.id
   res.status(200).render('users/login')
 });
 
@@ -97,7 +135,10 @@ router.post('/login', (req, res, next)=>{
   let user = req.body
   console.log('user-->',user)
   req.session.id = req.body._id;
-  console.log("req.session", req.session)
+  req.session.email = req.body.email
+  user.id = req.session.id;
+  user.name = req.session.email
+  console.log("user-->", user)
   return user
   res.render('home');
 });

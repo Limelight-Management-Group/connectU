@@ -137,7 +137,7 @@ router.post('/login', (req, res, next)=>{
   req.session.id = req.body._id;
   req.session.email = req.body.email
   user.id = req.session.id;
-  user.name = req.session.email
+  user = req.session.email
   console.log("user-->", user)
   return user
   res.render('home');

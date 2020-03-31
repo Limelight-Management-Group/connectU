@@ -4,7 +4,7 @@ if(process.env.NODE_ENV !== 'production'){
 const express = require('express');
 let app = express();
 var cookieParser = require('cookie-parser')
-
+// const socket = io();
 const path = require('path');
 const ejs = require('ejs');
 var bodyParser = require('body-parser');
@@ -20,7 +20,7 @@ var MongoUrl = require('./keys.js')
 // const NODE_ENV = 'development'
 const IN_PROD = process.env.NODE_ENV === 'production';
 const Video = require('twilio-video');
-
+var socket = require('socket.io');
 
 console.log("this is 2 hours:",TWO_HOURS);
 // initializePassport(
@@ -50,7 +50,7 @@ app.use( bodyParser.urlencoded( {
 } ) );
 
 //parse cookie 
-// app.use(express.cookieParser(SESS_SECRET));
+// app.use(express.cookieParser('cat'));
 
 // Session Middleware
 app.use(session({
@@ -90,16 +90,26 @@ app.use(routes);
 // app.use(app.router);
 // routes.initialize(app)
 
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+// app.io = io;
 let port = process.env.PORT || 3000;
 
-const server = require('http').createServer(app);
 
-const io = require('socket.io')(server);
-io.on('connection', () => { /* … */ });
-server.listen(port);
+http.listen(port, () =>{
+  console.log('JS server is live on port:', port)
+})
+
+io.on('connection', function(socket){ 
+//   socket.on('event', function (data) {
+//   socket.emit('chat-message', 'hello world.') 
+//     // body...
+//   });
+//   socket.on('disconnect', () =>{});
+  console.log('client socket is connected' + socket.id);
+});
 
 
+// server.listen(port);
 
-// app.listen(port, () =>{
-//   console.log('JS server is live on port:', port)
-// })
+

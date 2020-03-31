@@ -56,7 +56,7 @@ try{
     chatBody: req.body.chatBody,
     email: req.session
   };
-
+  console.log("this is the session", req.session.email);
   console.log("this is the chatBody", chatObj);
    mongoose.connect(MongoUrl, {
     useNewUrlParser: true,
@@ -68,12 +68,12 @@ try{
     console.log("connection successful!")
     Chats.create(chatObj).then( async function(chat, err){
          console.log('this is the chat', chat)
-         console.log('this is the session', req.session)
+         console.log('this is the session', req.session.email)
          return await chat
          chatStorage = chat;
     });
     req.flash('success_msg', "You are now registered!");
-    return res.render('chat/chat');
+    return res.render('chat/chat', {user: req.session.email});
 
 
   })
@@ -150,8 +150,9 @@ router.get('/logout', function (req,res){
 })
 
 router.get('/chat', ensureAuthenticated, (req, res) =>{
+  console.log("session info", req.session.email);
   res.status(200).render('chat/chat',{
-    user: req.user,
+    user: req.session.email,
     id: req.session.id
   })
   console.log('hit the chat route.');

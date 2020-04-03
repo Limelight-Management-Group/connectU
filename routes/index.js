@@ -67,8 +67,8 @@ try{
   db.once('open', function(){
     console.log("connection successful!")
     Chats.create(chatObj).then( async function(chat, err){
-         console.log('this is the chat', chat)
-         console.log('this is the session', req.session.email)
+         // console.log('this is the chat', chat)
+         // console.log('this is the session', req.session.email)
          return await chat
          chatStorage = chat;
     });
@@ -133,12 +133,12 @@ router.post('/login', (req, res, next)=>{
     failurRedirect: 'login'
   })(req,res, next);
   let user = req.body
-  console.log('user-->',user)
+  // console.log('user-->',user)
   req.session.id = req.body._id;
   req.session.email = req.body.email
   user.id = req.session.id;
   user = req.session.email
-  console.log("user-->", user)
+  // console.log("user-->", user)
   return user
   res.render('home');
 });

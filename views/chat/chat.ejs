@@ -14,15 +14,15 @@
 </div>
 
 <div id="message-container">
-  <div id="receive-container">output</div>
+  <p id="output">output</p>
   <form class="container" method="post" action="/chat" id="send-container">
   
   <div class="form-group">
-    <label for="loginPassword">Message</label>
-    <input type="textarea" class="form-control" id="chatBody" name="chatBody" placeholder="Enter message...">
+    <label for="chatMessage">Message</label>
+    <input type="text" class="form-control" id="message" name="chatBody" placeholder="Enter message...">
   </div>
   <div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" id="button" class="btn btn-primary">Submit</button>
   </div>
 </form>
 </div>

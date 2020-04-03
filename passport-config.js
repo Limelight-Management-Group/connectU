@@ -75,7 +75,7 @@ var MongoUrl = require('./keys.js').mongoURL
         let userStorage = {};
         db.on('error', error=>console.error(error));
         db.once('open', function(){
-          console.log('step1')
+          console.log('connection opened to mongodb')
           // findUser
           Users.findOne({email: email})
             .then(user => {
@@ -101,13 +101,13 @@ var MongoUrl = require('./keys.js').mongoURL
 
   passport.serializeUser(function(user, done){
     done(null, user.id);
-    console.log("user", user)
+    // console.log("user", user)
   });
 
 
   passport.deserializeUser(function(id,done){
     Users.findById(id, function(err, user){
-      console.log('ser', user)
+      // console.log('ser', user)
       done(err, user);
     });
   });

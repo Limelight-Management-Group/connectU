@@ -91,25 +91,32 @@ app.use(routes);
 // routes.initialize(app)
 
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
 // app.io = io;
 let port = process.env.PORT || 3000;
 
 
-http.listen(port, () =>{
+
+var server = app.listen(port, () =>{
   console.log('JS server is live on port:', port)
 })
+const io = socket(server);
 
 io.on('connection', function(socket){ 
-//   socket.on('event', function (data) {
-//   socket.emit('chat-message', 'hello world.') 
-//     // body...
-//   });
-//   socket.on('disconnect', () =>{});
-  console.log('client socket is connected' + socket.id);
+// //   socket.on('event', function (data) {
+// //   socket.emit('chat-message', 'hello world.') 
+// //     // body...
+// //   });
+// //   socket.on('disconnect', () =>{});
+  // console.log('client socket is connected');
+
+    socket.on('chat', function(data){
+      io.sockets.emit('chat', data);
+      // console.log('the data ------>',data)
+    });
+
 });
 
+console.log("wtf")
 
-// server.listen(port);
 
 

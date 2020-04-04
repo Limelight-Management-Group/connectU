@@ -111,13 +111,14 @@ io.on('connection', function(socket){
 
     socket.on('chat', (data) =>{
       io.sockets.emit('chat', data)
-      // console.log('the data ------>',data)
+      console.log('the data ------>',data)
     })
     socket.on('disconnect', function(data){
       connections.splice(connections.indexOf(socket), 1);
       console.log('disconnected: %s sockets disconnected', connections.length);
     });
-
+    // console.log('this is the session', session.user)
+    // console.log('user?', user)
 });
 
 // console.log("wtf")

@@ -7,19 +7,22 @@ var submitBtn = document.getElementById('button');
 console.log('<---output2', message);
 console.log('submit -->', submitBtn);
 console.log("the output--->", output.innerHTML);
+var userId= document.getElementById('userID');
+console.log(userId.innerHTML, "userId"); 
 
 let storage = {};
 // alert(storage)
 //click events 
 submitBtn.addEventListener('click', function(e){
+    // e.preventDefault();
    // e.preventDefault();
    socket.emit('chat', {
-    message: text.value
+    message: text.value,
+    user: userId.innerHTML
   })
    storage = text.value
 // alert(storage)
-    e.preventDefault();
-    return false;
+    // return false;
 // This will console
 });
 

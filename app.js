@@ -20,7 +20,7 @@ var MongoUrl = require('./keys.js')
 // const NODE_ENV = 'development'
 const IN_PROD = process.env.NODE_ENV === 'production';
 const Video = require('twilio-video');
-var socket = require('socket.io');
+// var socket = require('socket.io');
 
 console.log("this is 2 hours:",TWO_HOURS);
 // initializePassport(
@@ -90,33 +90,37 @@ app.use(routes);
 // app.use(app.router);
 // routes.initialize(app)
 
-const http = require('http').createServer(app);
+// const http = require('http').Server(app);
 // app.io = io;
+var server = require('http').createServer(app);
 let port = process.env.PORT || 3000;
+server.listen(port)
 
 
-
-var server = app.listen(port, () =>{
+// var server = http.listen(port, () =>{
   console.log('JS server is live on port:', port)
-})
-const io = socket(server);
+// })
+var io = require('socket.io').listen(server)
 
+// const io = socket(server);
+var connections = []
 io.on('connection', function(socket){ 
-// //   socket.on('event', function (data) {
-// //   socket.emit('chat-message', 'hello world.') 
-// //     // body...
-// //   });
-// //   socket.on('disconnect', () =>{});
-  // console.log('client socket is connected');
+// console.log(socket)
+  connections.push(socket);
+  console.log('connected: %s sockets connected', connections.length)
 
-    socket.on('chat', function(data){
-      io.sockets.emit('chat', data);
+    socket.on('chat', (data) =>{
+      io.sockets.emit('chat', data)
       // console.log('the data ------>',data)
+    })
+    socket.on('disconnect', function(data){
+      connections.splice(connections.indexOf(socket), 1);
+      console.log('disconnected: %s sockets disconnected', connections.length);
     });
 
 });
 
-console.log("wtf")
+// console.log("wtf")
 
 
 

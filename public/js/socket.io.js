@@ -6,7 +6,7 @@ var text = document.getElementById('message');
 var submitBtn = document.getElementById('button');
 console.log('<---output2', message);
 console.log('submit -->', submitBtn);
-console.log("the output--->", output.innerHTML);
+// console.log("the output--->", output.innerHTML);
 var userEmail= document.getElementById('userEmail');
 console.log(userEmail.innerHTML, "userEmail"); 
 
@@ -32,7 +32,7 @@ alert(storage.email)
 // listen for chat events
   socket.on("chat", (data)=>{
     console.log(data, "<-- storage");
-    output.innerHTML += '<p><strong>' + data.message + '</strong></p>'
+    // output.innerHTML += '<p><strong>' + data.message + '</strong></p>'
     // data.preventDefault();
     // message = '';
   });

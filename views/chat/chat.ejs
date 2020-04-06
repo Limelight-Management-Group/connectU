@@ -18,7 +18,20 @@
 </div>
 
 <div id="message-container">
-  <p  class="container" id="output">output</p>
+  <!-- <p  class="container" id="output">output</p> -->
+  <!-- <div class="container"> -->
+  <div class="container">
+ <%# for(var chat of chatsArr) { %> 
+    <%#= chat.chatBody %>
+ <%# } %>
+</div>
+  <div class="row" id="chatContainer">
+    <% chatStorage.forEach(function(chat){ %>
+      <p class="chatMessage col-sm-12 col-md-12 col-lg-12 container"><%= chat.chatBody %></p>
+      <br>
+    <% }) %>  
+      <hr>
+  </div>
   <form class="container" method="post" action="/user/:id" id="send-container">
   <div class="form-group">
     <label for="chatMessage">Message</label>

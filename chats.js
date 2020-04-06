@@ -8,7 +8,7 @@ mongoose.set('useFindAndModify', false);
 // Create Schema and Model
 
 const ChatsSchema = new Schema({
-  userName: {
+  email: {
     type: String,
     required: true
   },

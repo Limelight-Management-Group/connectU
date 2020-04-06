@@ -60,7 +60,7 @@ var MongoUrl = require('./keys.js').mongoURL
     passport.use(
       new LocalStrategy({usernameField: 'email'}, async function(email, password, done){
         // let db = mongoose.connection;
-        console.log('MongoUrl-->',MongoUrl)
+        // console.log('MongoUrl-->',MongoUrl)
             // DB Config
         // var MongoUrl = require('./keys.js').mongoURL
 
@@ -79,14 +79,18 @@ var MongoUrl = require('./keys.js').mongoURL
           // findUser
           Users.findOne({email: email})
             .then(user => {
+              // console.log('email', email)
+              // console.log('user?', user)
               if(!user){
                 return done(null, false, {message: 'No user with that email. Try again.'});
               }
               // Match Password
               bcrypt.compare(password, user.password, (err, isMatch)=>{
+                // console.log("password-------------------------------->")
                 if(err) throw err;
                 
                 if(isMatch){
+                  // console.log("this is the isMatch", user);
                   return done(null, user);
                 } else{
                   return done(null, false, {message: "Incorrect password for email provided. Try again."});
@@ -101,13 +105,16 @@ var MongoUrl = require('./keys.js').mongoURL
 
   passport.serializeUser(function(user, done){
     done(null, user.id);
-    // console.log("user", user)
+    // console.log(user, '<------user');
   });
 
 
   passport.deserializeUser(function(id,done){
-    Users.findById(id, function(err, user){
-      // console.log('ser', user)
+    Users.findById(id, function(err, user, id){
+      // console.log('ser--------->', user)
+      id = user._id
+      console.log('the req id', user.id)
+      // let user.id = userId
       done(err, user);
     });
   });

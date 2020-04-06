@@ -14,14 +14,12 @@
 "Welcome to ConnectU"
 
 <div class="container">
-  <h3>Hey <%- user %></h3>
-  <%#= id %>
+  <h3>Hey</h3><h3 id="userEmail"> <%- user %></h3>
 </div>
 
 <div id="message-container">
-  <p id="output">output</p>
-  <form class="container" method="post" action="/chat" id="send-container">
-  <p id="userID"><%- user %></p>
+  <p  class="container" id="output">output</p>
+  <form class="container" method="post" action="/user/:id" id="send-container">
   <div class="form-group">
     <label for="chatMessage">Message</label>
     <input type="text" class="form-control" id="message" name="chatBody" placeholder="Enter message...">

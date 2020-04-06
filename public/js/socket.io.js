@@ -1,4 +1,4 @@
-const socket = io.connect('');
+const socket = io.connect('http://localhost:3000');
 console.log('client server checking in')
 
 var output = document.getElementById('output');
@@ -7,8 +7,8 @@ var submitBtn = document.getElementById('button');
 console.log('<---output2', message);
 console.log('submit -->', submitBtn);
 console.log("the output--->", output.innerHTML);
-var userId= document.getElementById('userID');
-console.log(userId.innerHTML, "userId"); 
+var userEmail= document.getElementById('userEmail');
+console.log(userEmail.innerHTML, "userEmail"); 
 
 let storage = {};
 // alert(storage)
@@ -16,13 +16,16 @@ let storage = {};
 submitBtn.addEventListener('click', function(e){
     // e.preventDefault();
    // e.preventDefault();
+// e.preventDefault();
    socket.emit('chat', {
     message: text.value,
-    user: userId.innerHTML
+    email: userEmail.innerHTML
   })
-   storage = text.value
-// alert(storage)
-    // return false;
+   storage.message = text.value
+   storage.email = userEmail.innerHTML
+alert(storage.user)
+alert(storage.email)
+    return false;
 // This will console
 });
 

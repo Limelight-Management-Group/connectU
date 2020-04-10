@@ -12,7 +12,6 @@ console.log(userEmail.innerHTML, "userEmail");
 
 let storage = {};
 let emailStorage = {};
-// alert(storage)
 //click events 
 submitBtn.addEventListener('click', function(e){
 
@@ -25,27 +24,25 @@ submitBtn.addEventListener('click', function(e){
   storage.email = userEmail.innerHTML
   alert(storage.message)
   alert(storage.email)
-  // return false;
 
-  // console.log("!!!!!!!!", storage.email)  
   socket.emit('username',{
-    username: userEmail.innerHTML
+    username: userEmail.innerHTML 
+
   })
 
-  // emailStorage.email = userEmail.innerHTML
-
-
-
+  socket.emit('connection',{
+    username: userEmail.innerHTML
+  })
   // listen for chat events
   socket.on("chat", (data)=>{
     console.log(data, "<-- storage");
-  });  
+  });
+  socket.on('connection', (something)=>{
+    console.log('something', something)
+  })  
   // broadcast when a user connects to chat
   socket.on("username", (data)=>{
     console.log(data,"<-- username");
   });
-  // // runs when a user disconnects from chat
-  // socket.on('disconnect', ()=>{
-  //  io.emit('message', userEmail)
-  // })
+
 });

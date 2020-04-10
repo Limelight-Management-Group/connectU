@@ -15,7 +15,10 @@ const ChatsSchema = new Schema({
   chatBody:  {
     type: String,
   }, 
-
+    date:{
+    type: Date,
+    default: Date.now
+  }
 })
 
 const Chats = mongoose.model('chats', ChatsSchema);

@@ -25,9 +25,11 @@
     <%#= chat.chatBody %>
  <%# } %>
 </div>
+
   <div class="row" id="chatContainer">
     <% chatStorage.forEach(function(chat){ %>
-      <p class="chatMessage col-sm-12 col-md-12 col-lg-12 container"><%= chat.chatBody %></p>
+      <p class="chatMessage col-sm-12 col-md-12 col-lg-12 container"><b><%=chat.email %></b> : <%= chat.chatBody %></p>
+      <p><%= chat.date.getHours() % 12 %> : <%= chat.date.getMinutes() %></p>
       <br>
     <% }) %>  
       <hr>

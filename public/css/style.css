@@ -12,3 +12,7 @@
 #chatContainer{
   margin-left: 340px;
 }
+
+.chatMessage{
+  margin-left: 50px;
+}

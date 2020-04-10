@@ -77,10 +77,10 @@ console.log('the chatObj', chatObj)
            chatStorage = chat;
       });
       Users.findOne({email: req.session.email}, function(err, user){
-      console.log("user for post", user);
+      // console.log("user for post", user);
       var key = user._id
        
-      console.log('user...', user) 
+      // console.log('user...', user) 
       return res.redirect('/user/' + key);
     })
   })    
@@ -151,9 +151,9 @@ router.post('/login', (req, res, next)=>{
   db.once('open', function(){
     console.log("Login DB connection successful!")
     Users.findOne({email: req.body.email}, function(err, user){
-      console.log("user?????", user)
+      // console.log("user?????", user)
       key = user._id;
-      console.log('the key',key);
+      // console.log('the key',key);
   passport.authenticate('local', {
     successRedirect: '/user/' + key,
     failurRedirect: 'login'
@@ -169,7 +169,7 @@ router.post('/login', (req, res, next)=>{
   // user.id = req.session.id;
   // user = req.session.email
   // console.log("user-->", user.id)
-  console.log(req.session,'<-------userEmail')
+  // console.log(req.session,'<-------userEmail')
   return user
   res.render('home');
 });
@@ -198,26 +198,26 @@ router.get('/user/:id', ensureAuthenticated, (req, res) =>{
     db.on('error', error =>console.error(error));
     db.once('open', function(){
       console.log(" 1 first - user DB connection successful!");
-      console.log(req.session.email,"req.session.email")
+      // console.log(req.session.email,"req.session.email")
       // console.log(req.session.passport.user)
     Users.findOne({email: req.session.email}).then(function(){
-          console.log('3 - third')
+          // console.log('3 - third')
           Chats.find({email: req.session.email}).then(function(chat){
           req.session.cookie.email = req.session.email;
           req.session.cookie.user_id = req.session.passport.user
-          console.log('5 fifth - chats_-->-->--->', chat)
+          // console.log('5 fifth - chats_-->-->--->', chat)
           chat.forEach(function(message){
-            console.log(' 6 sixth - this is the chat i pushed', message)
+            // console.log(' 6 sixth - this is the chat i pushed', message)
             chatStorage.push(message)
-            console.log('A chat---->', message)  
+            // console.log('A chat---->', message)  
             console.log("pushed:", chatStorage.length)
           })
           req.session.cookie.user_chats = chatStorage      
-          console.log('7 seventh - session values->______>----<><', req.session.cookie.user_chats)
-          console.log(' 8 eighth -chatStorage', chatStorage)
+          // console.log('7 seventh - session values->______>----<><', req.session.cookie.user_chats)
+          // console.log(' 8 eighth -chatStorage', chatStorage)
           let chatObj = req.session.cookie.user_chats;
       // db.close()
-        console.log('4 - fourth')
+        // console.log('4 - fourth')
           res.status(200).render('chat/chat',{
           user: req.session.email,
           sess_id: req.session.passport.user,
@@ -229,7 +229,7 @@ router.get('/user/:id', ensureAuthenticated, (req, res) =>{
     
   
   console.log(' 2 Second - hit the chat route.');
-  console.log("req.session", req.session)
+  // console.log("req.session", req.session)
   })
   // console.log('user?', user)
 });

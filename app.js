@@ -106,20 +106,32 @@ var io = require('socket.io').listen(server)
 var connections = []
 io.on('connection', function(socket){ 
 // console.log(socket)
-  connections.push(socket);
-  console.log('connected: %s sockets connected', connections.length)
+
+    // Socket connection
+    connections.push(socket);
+    console.log('connected: %s sockets connected', connections.length)
 
     socket.on('chat', (data) =>{
       io.sockets.emit('chat', data)
       console.log('the data ------>',data)
     })
+    socket.on('username',(name)=>{
+      socket.broadcast.emit('username', name)
+      console.log("name--->", name)
+    })
+   
+      // runs when a user disconnects from chat
+  socket.on('disconnect', ()=>{
+   io.emit('message', 'joined the chat')
+  })  
     socket.on('disconnect', function(data){
       connections.splice(connections.indexOf(socket), 1);
       console.log('disconnected: %s sockets disconnected', connections.length);
     });
+
+});
     // console.log('this is the session', session.user)
     // console.log('user?', user)
-});
 
 // console.log("wtf")
 

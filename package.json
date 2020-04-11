@@ -2,6 +2,9 @@
   "name": "connectu",
   "version": "1.0.0",
   "description": "ConnectU is chat and video app that connects you to other members on the platform.",
+  "engines":{
+    "node": "10.15.1x"
+  },
   "main": "app.js",
   "directories": {
     "test": "test"

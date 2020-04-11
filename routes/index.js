@@ -150,7 +150,7 @@ router.post('/login', (req, res, next)=>{
   db.on('error', error =>console.error(error));
   db.once('open', function(){
     console.log("Login DB connection successful!")
-    console.log(req.body, "req.body?")
+    console.log(req.body.email, "req.body?")
     Users.findOne({email: req.body.email}, function(err, user){
       console.log("user?????", user)
       key = user._id;

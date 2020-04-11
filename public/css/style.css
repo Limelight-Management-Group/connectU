@@ -10,9 +10,14 @@
 }
 
 #chatContainer{
-  margin-left: 340px;
+  margin-left: 150px;
 }
 
 .chatMessage{
   margin-left: 50px;
+}
+
+#message-container{
+  margin-top: 75px;
+  margin-left: -40px;
 }

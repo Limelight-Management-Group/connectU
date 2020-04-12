@@ -1,4 +1,4 @@
-const socket = io.connect('http://localhost:3000');
+const socket = io.connect();
 console.log('client server checking in')
 
 var output = document.getElementById('output');
@@ -7,7 +7,8 @@ var submitBtn = document.getElementById('button');
 console.log('<---output2', message);
 console.log('submit -->', submitBtn);
 // console.log("the output--->", output.innerHTML);
-var userEmail= document.getElementById('userEmail');
+var 
+Email= document.getElementById('userEmail');
 console.log(userEmail.innerHTML, "userEmail"); 
 
 let storage = {};
@@ -47,103 +48,104 @@ submitBtn.addEventListener('click', function(e){
 
 });
 
-/* VIDEO CHAT */
+// /* VIDEO CHAT */
 
-// get local video and display it with permission
-function getlVideo(callbacks){
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;  
-    var constraints = {
-      audio: true,
-      video: true
-    }
-    navigator.getUserMedia(constraints, callbacks.success, callbacks.error)
-}
-function recStream(stream, elemID){
-  var video = document.getElementById(elemID);
+// // get local video and display it with permission
+// function getlVideo(callbacks){
+//     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;  
+//     var constraints = {
+//       audio: true,
+//       video: true
+//     }
+//     navigator.getUserMedia(constraints, callbacks.success, callbacks.error)
+// }
+// function recStream(stream, elemID){
+//   var video = document.getElementById(elemID);
 
-  video.srcObject = stream;
+//   video.srcObject = stream;
 
-  window.peer_stream = stream;
-}
-getlVideo({
-  success: function(stream){
-    window.localstream = stream;
-    recStream(stream, 'lvideo')
-  },
-  error: function(err){
-    alert("cannot access your camera");
-    console.log(err);
-  }
-})
+//   window.peer_stream = stream;
+// }
+// getlVideo({
+//   success: function(stream){
+//     window.localstream = stream;
+//     recStream(stream, 'lvideo')
+//   },
+//   error: function(err){
+//     alert("cannot access your camera");
+//     console.log(err);
+//   }
+// })
 
-var conn;
-var peer_id;
+// var conn;
+// var peer_id;
 
-// create a peer connection with peer object 
-var peer = new Peer({key: 'lwjd5qra8257b9'});
+// // create a peer connection with peer object 
+// var peer = new Peer({key: 'lwjd5qra8257b9'});
 
-console.log('displayId section', document.getElementById('displayId'))
+// console.log('displayId section', document.getElementById('displayId'))
 
-// display the peer id on the DOM
-peer.on('open', function(){
-  document.getElementById("displayId").innerHTML = peer.id
-})
+// // display the peer id on the DOM
+// peer.on('open', function(){
+//   document.getElementById("displayId").innerHTML = peer.id
+// })
 
-peer.on('connection', function(connection){
-  conn = connection;
-  peer_id = connection.peer;
+// peer.on('connection', function(connection){
+//   conn = connection;
+//   peer_id = connection.peer;
 
-  document.getElementById('connId').value = peer_id;
-});
+//   document.getElementById('connId').value = peer_id;
+// });
 
-peer.on('error', function(err){
-  alert('an error occured:' + err)
-  console.log('err', err);
-})
-// onClick with the connection butt = expose the ice info.
-document.getElementById('connectButton').addEventListener('click', function(){
-  peer_id = document.getElementById('connId').value;
+// peer.on('error', function(err){
+//   alert('an error occured:' + err)
+//   console.log('err', err);
+// })
 
-  if(peer_id){
-    conn = peer.connect(peer_id)
-  }
-  else{
-    alert("enter an id.");
-    return false;
-  }
-})
-// call on click (offer and answer is exchanged)
-  peer.on('call', function(call){
-    var acceptCall = confirm('Do you want to connect this call?');
-    if(acceptCall){
-      call.answer(window.localstream);
-      call.on('stream', function(stream){
-        window.peer_stream = stream;
+// // onClick with the connection butt = expose the ice info.
+// document.getElementById('connectButton').addEventListener('click', function(){
+//   peer_id = document.getElementById('connId').value;
 
-        recStream(stream, 'rvideo')
-      });
-      call.on('close', function(){
-        alert("the call has ended.")
-      })
-    }
-    else{
-      console.log('call not accepted. Please try again later.')
-    }
+//   if(peer_id){
+//     conn = peer.connect(peer_id)
+//   }
+//   else{
+//     alert("enter an id.");
+//     // return false;
+//   }
+// })
+// // call on click (offer and answer is exchanged)
+//   peer.on('call', function(call){
+//     var acceptCall = confirm('Do you want to connect this call?');
+//     if(acceptCall){
+//       call.answer(window.localstream);
+//       call.on('stream', function(stream){
+//         window.peer_stream = stream;
+
+//         recStream(stream, 'rvideo')
+//       });
+//       call.on('close', function(){
+//         alert("the call has ended.")
+//       })
+//     }
+//     else{
+//       console.log('call not accepted. Please try again later.')
+//     }
   
-  })
-// ask to call
-document.getElementById('callButton').addEventListener('click', function(){
- console.log("now calling:" + peer_id);
- console.log("the peer", peer);
+//   })
+// // ask to call
+// document.getElementById('callButton').addEventListener('click', function(){
+//  console.log("now calling:" + peer_id);
+//  console.log("the peer", peer);
 
 
- var call = peer.call(peer_id, window.localstream);
- call.on('stream', function(stream){
-  window.peer_stream = stream;
+//  var call = peer.call(peer_id, window.localstream);
+//  call.on('stream', function(stream){
+//   window.peer_stream = stream;
 
-  recStream(stream, 'rvideo');
- }) 
-})
+//   recStream(stream, 'rvideo');
+//  }) 
+// })
 
 // accept the call
 

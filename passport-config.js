@@ -64,9 +64,9 @@ var MongoUrl = require('./keys.js').mongoURL
             // DB Config
         // var MongoUrl = require('./keys.js').mongoURL
 
-        let connectString = process.env.Database_URL;
+        let connectString = process.env.Database_URI;
         // mongoose.connect(MongoUrl);
-        mongoose.connect(url, {
+        mongoose.connect(MongoUrl, {
           useNewUrlParser: true,
           useUnifiedTopology: true
         });
@@ -75,7 +75,7 @@ var MongoUrl = require('./keys.js').mongoURL
         let userStorage = {};
         db.on('error', error=>console.error(error));
         db.once('open', function(){
-          console.log('connection opened to mongodb')
+          console.log('Passport connection opened to mongodb')
           // findUser
           Users.findOne({email: email})
             .then(user => {

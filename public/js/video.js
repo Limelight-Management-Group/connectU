@@ -4,10 +4,10 @@
 const mediaStreamConstraints = {
   video: {
     width: {
-      min: 1280
+      min: 580
     },
     height: {
-      min: 720
+      min: 420
     }
   },
   audio: true
@@ -33,3 +33,6 @@ function handleLocalMediaStreamError(error) {
 // Initializes media stream.
 navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
   .then(gotLocalMediaStream).catch(handleLocalMediaStreamError);
+
+
+

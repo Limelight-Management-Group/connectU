@@ -64,11 +64,12 @@ var MongoUrl = require('./keys.js').mongoURL
             // DB Config
         // var MongoUrl = require('./keys.js').mongoURL
 
+
+
         let connectString = process.env.Database_URI;
         // mongoose.connect(MongoUrl);
         mongoose.connect(MongoUrl, {
-          useNewUrlParser: true,
-          useUnifiedTopology: true
+          useNewUrlParser: true
         });
 
         let db = mongoose.connection;
@@ -79,8 +80,8 @@ var MongoUrl = require('./keys.js').mongoURL
           // findUser
           Users.findOne({email: email})
             .then(user => {
-              // console.log('email', email)
-              // console.log('user?', user)
+              console.log('email', email)
+              console.log('user???????', user)
               if(!user){
                 return done(null, false, {message: 'No user with that email. Try again.'});
               }

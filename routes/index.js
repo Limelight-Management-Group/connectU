@@ -141,7 +141,8 @@ router.get('/login', (req,res)=>{
 });
 // href="activity/<%=activity._id%>"
 router.post('/login', (req, res, next)=>{
-  // console.log('session-------|-----|->', req.session.id)
+  console.log('session-------|-----|->', req.session.id)
+  console.log(req.body, '--the req.body--');
     // I need to find the user object that i just authenticated.
   let key;
   mongoose.connect(MongoUrl, {

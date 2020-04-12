@@ -12,6 +12,8 @@ const assert = require('assert');
 var bcrypt= require('bcrypt');
 let passport = require('passport');
 const { ensureAuthenticated} = require('../auth');
+var PassportHerokuAddon = require('passport-heroku-addon');
+
 
 // DB Config
 var MongoUrl = require('../keys.js').mongoURL

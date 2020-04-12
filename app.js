@@ -19,6 +19,8 @@ var MongoUrl = require('./keys.js')
 // const NODE_ENV = 'development'
 const IN_PROD = process.env.NODE_ENV === 'production';
 const Video = require('twilio-video');
+const MongoStore = require('connect-mongo')(session);
+
 // var socket = require('socket.io');
 
 console.log("this is 2 hours:",TWO_HOURS);
@@ -50,6 +52,7 @@ app.use( bodyParser.urlencoded( {
 
 //parse cookie 
 // app.use(express.cookieParser('cat'));
+app.enable('trust proxy'); // add this line
 
 // Session Middleware
 app.use(session({
@@ -61,10 +64,11 @@ app.use(session({
       maxAge: SESS_LIFETIME,
       sameSite: true,
       secure: IN_PROD
-    } 
+    },
+    store: new MongoStore({ttl: SESS_LIFETIME}) 
 }));
 
-
+  
 // Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());

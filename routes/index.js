@@ -105,8 +105,8 @@ router.post('/signup', async (req, res) =>{
   // let connectString = process.env.Database_URL;
   mongoose.connect(MongoUrl, 
   {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+    useNewUrlParser: true
+    // useUnifiedTopology: true
   });
   let db = mongoose.connection;
   var userStorage = {};

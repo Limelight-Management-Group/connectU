@@ -103,7 +103,7 @@ router.post('/signup', async (req, res) =>{
     bio: req.body.bio  
   }
   // let connectString = process.env.Database_URL;
-  mongoose.connect(MongoUrl || 'mongodb://127.0.0.1:27017/connectU', 
+  mongoose.connect(MongoUrl, 
   {
     useNewUrlParser: true,
     useUnifiedTopology: true

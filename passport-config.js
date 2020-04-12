@@ -91,7 +91,7 @@ var MongoUrl = require('./keys.js').mongoURL
                 if(err) throw err;
                 
                 if(isMatch){
-                  // console.log("this is the isMatch", user);
+                  console.log("this is the isMatch", user);
                   return done(null, user);
                 } else{
                   return done(null, false, {message: "Incorrect password for email provided. Try again."});

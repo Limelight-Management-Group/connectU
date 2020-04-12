@@ -158,11 +158,11 @@ router.post('/login', (req, res, next)=>{
       console.log("user?????", user)
       key = user._id;
       // console.log('the key',key);
-  passport.authenticate('local', {
-    successRedirect: '/user/' + key,
-    failurRedirect: 'login'
-  })(req,res, next);
-    })
+      passport.authenticate('local', {
+        successRedirect: '/user/' + key,
+        failurRedirect: 'login'
+        })(req,res, next);
+      })
   })
   let user = req.body
   // console.log('user-->',user)
